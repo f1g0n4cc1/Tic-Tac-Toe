@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic-Tac-Toe</title>
+    <meta name="description" content="Real-time Tic-Tac-Toe with Neumorphic Design">
+    <meta name="theme-color" content="#e0e5ec">
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="/static/js/script.js?v=1" defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Lobby Section -->
+        <div id="lobby" class="screen active">
+            <h1 class="logo">Tic-Tac-Toe</h1>
+            <div class="neumorphic-card">
+                <input type="text" id="username" placeholder="Enter Your Name" maxlength="10">
+                <div class="actions">
+                    <button id="create-btn" class="neu-btn primary">Create Room</button>
+                    <button id="ai-btn" class="neu-btn accent"
+                        style="background-color: #00b894; color: white; margin-top: 10px;">Play vs AI 🤖</button>
+                    <div id="ai-difficulty" class="difficulty-select hidden"
+                        style="margin-top: 10px; display: none; gap: 5px; justify-content: center;">
+                        <button class="diff-btn active" data-level="hard"
+                            style="font-size: 0.8rem; padding: 5px 10px; cursor: pointer;">Hard</button>
+                        <button class="diff-btn" data-level="medium"
+                            style="font-size: 0.8rem; padding: 5px 10px; cursor: pointer;">Med</button>
+                        <button class="diff-btn" data-level="easy"
+                            style="font-size: 0.8rem; padding: 5px 10px; cursor: pointer;">Easy</button>
+                    </div>
+                    <div class="divider">OR</div>
+                    <div class="join-group">
+                        <input type="text" id="room-code-input" placeholder="Room Code">
+                        <button id="join-btn" class="neu-btn">Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Section -->
+        <div id="game" class="screen">
+            <header>
+                <div class="room-info">Room: <span id="display-room-code"></span></div>
+                <div class="theme-toggle">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <label for="dark-mode-toggle" class="toggle-slider"></label>
+                </div>
+            </header>
+
+            <div class="scoreboard">
+                <div class="player p1 active">
+                    <span class="name">Player 1</span>
+                    <span class="score">0</span>
+                    <span class="symbol">X</span>
+                </div>
+                <div class="vs">VS</div>
+                <div class="player p2">
+                    <span class="name">Waiting...</span>
+                    <span class="score">0</span>
+                    <span class="symbol">O</span>
+                </div>
+            </div>
+
+            <div class="game-board-container">
+                <div id="board" class="game-board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+                <div id="loader" class="loader hidden">
+                    <div class="spinner"></div>
+                    <p>Connecting...</p>
+                </div>
+                <div id="coin-flip" class="coin-flip hidden">
+                    <div class="coin">
+                        <div class="side heads">X</div>
+                        <div class="side tails">O</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="status-message" id="status-msg">Waiting for opponent...</div>
+                <button id="restart-btn" class="neu-btn hidden" style="margin: 10px auto; display: none;">Play Again
+                    🔄</button>
+                <div class="emote-bar">
+                    <button class="emote-btn" data-emote="👋">👋</button>
+                    <button class="emote-btn" data-emote="🤔">🤔</button>
+                    <button class="emote-btn" data-emote="😂">😂</button>
+                    <button class="emote-btn" data-emote="🧂">🧂</button>
+                    <button class="emote-btn" data-emote="GG">GG</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="floating-emotes"></div>
+</body>
+
+</html>
