@@ -23,6 +23,16 @@ let mySymbol = null;
 let isMyTurn = false;
 let gameActive = false;
 
+// Define the SVG templates as strings
+const markers = {
+    X: `<svg viewBox="0 0 100 100">
+            <path class="marker-path" d="M20 20 L80 80 M80 20 L20 80" />
+        </svg>`,
+    O: `<svg viewBox="0 0 100 100">
+            <circle class="marker-path" cx="50" cy="50" r="35" />
+        </svg>`
+};
+
 // Audio / Haptics
 function vibrate(pattern) {
     if (navigator.vibrate) {
@@ -264,7 +274,7 @@ socket.on('game_start', (data) => {
 
 socket.on('move_made', (data) => {
     const cell = document.querySelector(`.cell[data-index="${data.index}"]`);
-    cell.textContent = data.symbol;
+    cell.innerHTML = markers[data.symbol];
     cell.classList.add('occupied', data.symbol);
 
     // Haptic if it's my move (confirm) or opp move (alert)
@@ -319,7 +329,7 @@ function updateTurnInternal(turn) {
 
 function resetBoard() {
     cells.forEach(cell => {
-        cell.textContent = '';
+        cell.innerHTML = '';
         cell.className = 'cell';
     });
 }
