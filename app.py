@@ -212,7 +212,7 @@ async def start_game(room_id):
     await sio.emit('game_start', {'turn': starting_player, 'board': room['board']}, room=room_id)
     
     if room.get('is_ai_game') and starting_player == 'O':
-        await asyncio.sleep(2) 
+        await asyncio.sleep(4) 
         await make_ai_move(room_id)
 
 @sio.on('make_move')
