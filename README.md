@@ -9,8 +9,8 @@ A real-time multiplayer Tic-Tac-Toe web application featuring both peer-to-peer 
   - **Easy:** Makes random mistakes, suitable for casual play.
   - **Hard:** Uses the Minimax algorithm for optimal play (unbeatable).
 - **Resilient Connections:** Automatic reconnection support for page refreshes.
-- **Design:** Modern Neumorphic UI with Dark/Light mode support.
-- **Interactive:** Live game states, coin flip animations, and floating emotes.
+- **Design:** Modern Neon Glass UI with Dark/Light mode support and self-drawing SVG markers.
+- **Interactive:** Live game states, coin flip animations, self-drawing SVG markers, and floating emotes.
 
 ## Technologies
 
