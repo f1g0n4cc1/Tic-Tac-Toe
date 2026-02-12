@@ -44,62 +44,60 @@
 
         <!-- Game Section -->
         <div id="game" class="screen">
-            <header>
+            <div class="player-info-left">
                 <div class="room-info">Room: <span id="display-room-code"></span></div>
-                <div class="theme-toggle">
-                    <input type="checkbox" id="dark-mode-toggle">
-                    <label for="dark-mode-toggle" class="toggle-slider"></label>
-                </div>
-            </header>
-
-            <div class="scoreboard">
                 <div class="player p1 active">
                     <span class="name">Player 1</span>
                     <span class="score">0</span>
                     <span class="symbol">X</span>
                 </div>
-                <div class="vs">VS</div>
-                <div class="player p2">
-                    <span class="name">Waiting...</span>
-                    <span class="score">0</span>
-                    <span class="symbol">O</span>
-                </div>
-            </div>
-
-            <div class="game-board-container">
-                <div id="board" class="game-board">
-                    <div class="cell" data-index="0"></div>
-                    <div class="cell" data-index="1"></div>
-                    <div class="cell" data-index="2"></div>
-                    <div class="cell" data-index="3"></div>
-                    <div class="cell" data-index="4"></div>
-                    <div class="cell" data-index="5"></div>
-                    <div class="cell" data-index="6"></div>
-                    <div class="cell" data-index="7"></div>
-                    <div class="cell" data-index="8"></div>
-                </div>
-                <div id="loader" class="loader hidden">
-                    <div class="spinner"></div>
-                    <p>Connecting...</p>
-                </div>
-                <div id="coin-flip" class="coin-flip hidden">
-                    <div class="coin">
-                        <div class="side heads">X</div>
-                        <div class="side tails">O</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="controls">
-                <div class="status-message" id="status-msg">Waiting for opponent...</div>
-                <button id="restart-btn" class="neu-btn hidden" style="margin: 10px auto; display: none;">Play Again
-                    🔄</button>
                 <div class="emote-bar">
                     <button class="emote-btn" data-emote="👋">👋</button>
                     <button class="emote-btn" data-emote="🤔">🤔</button>
                     <button class="emote-btn" data-emote="😂">😂</button>
                     <button class="emote-btn" data-emote="🧂">🧂</button>
                     <button class="emote-btn" data-emote="GG">GG</button>
+                </div>
+            </div>
+
+            <div id="board" class="game-board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+
+            <div class="player-info-right">
+                <div class="theme-toggle">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <label for="dark-mode-toggle" class="toggle-slider"></label>
+                </div>
+                <div class="player p2">
+                    <span class="name">Waiting...</span>
+                    <span class="score">0</span>
+                    <span class="symbol">O</span>
+                </div>
+                <div class="controls">
+                    <div class="status-message" id="status-msg">Waiting for opponent...</div>
+                    <button id="restart-btn" class="neu-btn hidden" style="margin: 10px auto; display: none;">Play Again
+                        🔄</button>
+                </div>
+            </div>
+
+            <!-- Loader and Coin Flip remain outside player-info but still within #game screen if needed elsewhere -->
+            <div id="loader" class="loader hidden">
+                <div class="spinner"></div>
+                <p>Connecting...</p>
+            </div>
+            <div id="coin-flip" class="coin-flip hidden">
+                <div class="coin">
+                    <div class="side heads">X</div>
+                    <div class="side tails">O</div>
                 </div>
             </div>
         </div>
