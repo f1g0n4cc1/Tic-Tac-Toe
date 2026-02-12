@@ -56,15 +56,33 @@ body {
     width: 100%;
 }
 
+/* --- The Parent Container --- */
 .screen.active {
-    display: flex;
-    justify-content: space-between;
-    padding: 2vmin 0;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* Exact 3-column layout */
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 5vw; /* Space from screen edges */
     box-sizing: border-box;
 }
 
+.player-info-left {
+    justify-self: start; /* Pin to left */
+    text-align: left;
+}
+
+.player-info-right {
+    justify-self: end; /* Pin to right */
+    text-align: right;
+}
+
 /* --- Neon Glass Board --- */
+/* --- The Board (Center) --- */
 .game-board {
+    justify-self: center; /* Pin to center */
+    flex: 0 0 auto; /* Keeps board size fixed regardless of text */
+    margin: 0 2rem; /* Minimum safety gap */
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
