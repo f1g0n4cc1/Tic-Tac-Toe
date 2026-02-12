@@ -8,8 +8,8 @@ A real-time multiplayer Tic-Tac-Toe web application featuring both peer-to-peer 
 - **Single Player vs AI:**
   - **Easy:** Makes random mistakes, suitable for casual play.
   - **Hard:** Uses the Minimax algorithm for optimal play (unbeatable).
-- **Resilient Connections:** Automatic reconnection support for page refreshes.
-- **Design:** Modern Neon Glass UI with Dark/Light mode support and self-drawing SVG markers.
+
+- **Design:** Modern Neon Glass UI with Dark/Light mode support, 3-Column Grid Layout, and self-drawing SVG markers.
 - **Interactive:** Live game states, coin flip animations, self-drawing SVG markers, and floating emotes.
 
 ## Technologies
