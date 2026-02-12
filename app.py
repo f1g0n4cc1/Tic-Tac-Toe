@@ -103,60 +103,25 @@ async def handle_create_room(sid, data):
 async def handle_join_game(sid, data):
     room_id = data.get('room_id')
     player_name = data.get('name')
-    stored_player_id = data.get('player_id')
-    print(f"DEBUG: join_game from {sid}, room: {room_id}, name: {player_name}, p_id: {stored_player_id}")
     
     if not is_valid_input(player_name) or not is_valid_input(room_id):
-        print(f"DEBUG: Invalid input in join_game: name={player_name}, room={room_id}")
         await sio.emit('error', {'message': 'Invalid input'}, room=sid)
         return
     
-    if not room_id or room_id not in rooms:
-        print(f"DEBUG: Room not found: {room_id}")
+    if room_id not in rooms:
         await sio.emit('error', {'message': 'Room not found'}, room=sid)
         return
 
     room = rooms[room_id]
-    
-    # Reconnection Logic
-    if stored_player_id:
-        existing_sid = next((s for s, p in room['players'].items() if p.get('player_id') == stored_player_id), None)
-        if existing_sid:
-            print(f"DEBUG: Found existing session for {stored_player_id} at {existing_sid}. Reconnecting to {sid}")
-            player_data = room['players'].pop(existing_sid)
-            room['players'][sid] = player_data
-            sid_to_room[sid] = room_id
-            await sio.enter_room(sid, room_id)
-            
-            await sio.emit('player_reconnected', {
-                'room_id': room_id,
-                'symbol': player_data['symbol'],
-                'board': room['board'],
-                'turn': room['turn'],
-                'game_active': room['game_active'],
-                'wins': room['wins'],
-                'players': [{'name': p['name'], 'symbol': p['symbol']} for p in room['players'].values()]
-            }, room=sid)
-            return
 
-    # AI Mode Check
-    if room.get('is_ai_game'):
-         print(f"DEBUG: AI Game check for {room_id}. Players: {len(room['players'])}")
-         if len(room['players']) >= 1 and sid not in room['players']:
-              print(f"DEBUG: Room {room_id} is a single player game and already has a human.")
-              await sio.emit('error', {'message': 'This is a single player game'}, room=sid)
-              return
-    
-    if len(room['players']) >= 2:
-        if sid not in room['players']:
-             print(f"DEBUG: Room {room_id} is full.")
-             await sio.emit('error', {'message': 'Room is full'}, room=sid)
-             return
+    # Block re-joining if 2 players are already there
+    if len(room['players']) >= 2 and sid not in room['players']:
+        await sio.emit('error', {'message': 'Room is full'}, room=sid)
+        return
 
-    # Assign symbol
+    # Assign symbol and proceed as fresh join
     symbol = 'X' if len(room['players']) == 0 else 'O'
-    print(f"DEBUG: Assigning symbol {symbol} to {sid}")
-    room['players'][sid] = {'name': player_name, 'symbol': symbol, 'player_id': stored_player_id}
+    room['players'][sid] = {'name': player_name, 'symbol': symbol}
     sid_to_room[sid] = room_id
     
     await sio.enter_room(sid, room_id)
