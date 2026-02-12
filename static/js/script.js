@@ -83,25 +83,14 @@ joinBtn.addEventListener('click', () => {
     const code = roomCodeInput.value.trim();
     if (!name || !code) return alert("Enter name and room code");
 
-    // Store in localStorage for refresh recovery
-    localStorage.setItem('ttt_name', name);
-    localStorage.setItem('ttt_room', code);
-
     socket.emit('join_game', {
         room_id: code,
-        name: name,
-        player_id: getPlayerID()
+        name: name
+        // player_id removed
     });
 });
 
-function getPlayerID() {
-    let id = localStorage.getItem('ttt_player_id');
-    if (!id) {
-        id = Math.random().toString(36).substring(2) + Date.now().toString(36);
-        localStorage.setItem('ttt_player_id', id);
-    }
-    return id;
-}
+
 
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
@@ -147,18 +136,10 @@ socket.on('room_created', (data) => {
     const code = data.room_id;
     roomID = code; // Set global roomID immediately
 
-    // Fix: Save for reconnection
-    const name = usernameInput.value || localStorage.getItem('ttt_name');
-    if (name) {
-        localStorage.setItem('ttt_name', name);
-        localStorage.setItem('ttt_room', code);
-    }
-
     // Auto join the room we created
     socket.emit('join_game', {
         room_id: code,
-        name: name,
-        player_id: getPlayerID()
+        name: usernameInput.value
     });
 });
 
@@ -183,30 +164,7 @@ socket.on('player_joined', (data) => {
     }
 });
 
-socket.on('player_reconnected', (data) => {
-    roomID = data.room_id;
-    mySymbol = data.symbol;
-    gameActive = data.game_active;
-    isMyTurn = (data.turn === mySymbol);
 
-    displayRoomCode.textContent = roomID;
-    showScreen(gameScreen);
-    resetBoard();
-
-    // Restore board
-    data.board.forEach((sym, i) => {
-        if (sym) {
-            const cell = document.querySelector(`.cell[data-index="${i}"]`);
-            cell.textContent = sym;
-            cell.classList.add('occupied', sym);
-        }
-    });
-
-    updateScoreboardNames(data.players);
-    updateScores(data.wins);
-    updateTurnInternal(data.turn);
-    statusMsg.textContent = "Reconnected!";
-});
 
 socket.on('player_left', (data) => {
     statusMsg.textContent = data.message;
@@ -214,23 +172,7 @@ socket.on('player_left', (data) => {
     vibrate([100, 50, 100]);
 });
 
-// Auto-reconnect on load if room info exists
-window.addEventListener('load', () => {
-    const savedName = localStorage.getItem('ttt_name');
-    const savedRoom = localStorage.getItem('ttt_room');
-    if (savedName && savedRoom) {
-        usernameInput.value = savedName;
-        roomCodeInput.value = savedRoom;
-        // Small delay to ensure socket is ready
-        setTimeout(() => {
-            socket.emit('join_game', {
-                room_id: savedRoom,
-                name: savedName,
-                player_id: getPlayerID()
-            });
-        }, 500);
-    }
-});
+
 
 socket.on('game_start', (data) => {
     gameActive = true;
